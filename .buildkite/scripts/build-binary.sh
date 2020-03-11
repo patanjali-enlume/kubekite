@@ -22,7 +22,6 @@ git log -1 > build/public/REVISION.txt
 # Build the new image
 docker build \
   --tag $IMAGE_NAME:$IMAGE_TAG \
-  $EXTRA_TAGS \
   -f $DOCKERFILE \
   .
 # Execute the image so that we can get the binary out of it
