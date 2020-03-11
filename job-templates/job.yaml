@@ -13,7 +13,7 @@ spec:
       containers:
       - name: buildkite-agent
         image: buildkite/agent:latest
-        args: ["Start", "--disconnect-after-job", "--disconnect-after-job-timeout", "300"]
+        args: ["start", "--disconnect-after-job", "--disconnect-after-job-timeout", "300"]
         imagePullPolicy: Always
         securityContext:
           privileged: true 
@@ -37,21 +37,23 @@ spec:
         - name: ssh-keys
           mountPath: /root/.ssh/id_rsa.pub
           subPath: id_rsa.pub
-        - name: docker-sock  
+        - name: docker-binary
+          mountPath: /usr/bin/docker
+        - name: docker-socket  
           mountPath: /docker/docker.sock
         resources:
           requests:
             cpu: "500m"
-            memory: "8000M"
+            memory: "2000M"
           limits:
-            cpu: "4000m"
-            memory: "28000M"
+            cpu: "2000m"
+            memory: "5000M"
       volumes:
         - name: ssh-keys
           secret:
             secretName: buildkite-agent-ssh
             defaultMode: 0400
-        - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
-            type: Socket
+        - name: docker-binary
+          hostPath: {path: /usr/bin/docker}
+        - name: docker-socket
+          hostPath: {path: /var/run/docker.sock}
